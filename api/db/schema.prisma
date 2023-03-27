@@ -8,110 +8,111 @@ generator client {
   binaryTargets = "native"
 }
 
-model Users {
-  id           String     @id @unique @default(cuid())
-  email        String     @unique
-  userName     String     @unique
-  creationDate DateTime   @default(now())
-  profile      Profiles?  @relation(fields: [profilesId], references: [id])
-  myFolder     Folders?
-  article      Articles[]
-  friends      Friends?   @relation(fields: [friendsId], references: [id])
+model User {
+  id           String    @id @unique @default(cuid())
+  email        String    @unique
+  userName     String    @unique
+  creationDate DateTime  @default(now())
+  profile      Profile?  @relation(fields: [profilesId], references: [id])
+  myFolder     Folder?
+  articles     Article[]
+  friends      Friend?   @relation(fields: [friendsId], references: [id])
   profilesId   String?
   friendsId    String?
 }
 
-model Profiles {
+model Profile {
   id       String    @id @unique @default(cuid())
   story    String?
   birthday DateTime?
-  Albums   Albums[]
-  Users    Users[]
+  Album    Album[]
+  User     User[]
 }
 
-model Albums {
-  id         String    @id @unique @default(cuid())
-  creation   DateTime?
-  update     DateTime? @updatedAt
-  photos     Photos[]
-  Profiles   Profiles? @relation(fields: [profilesId], references: [id])
-  profilesId String?
+model Album {
+  id        String    @id @unique @default(cuid())
+  creation  DateTime?
+  update    DateTime? @updatedAt
+  photos    Photo[]
+  Profile   Profile?  @relation(fields: [profileId], references: [id])
+  profileId String?
 }
 
-model Photos {
+model Photo {
   id       String   @id @unique @default(cuid())
   fileName String
   uploadOn DateTime
-  albums   Albums?  @relation(fields: [albumsId], references: [id])
+  album    Album?   @relation(fields: [albumId], references: [id])
   Url      String?
-  albumsId String?
-  Chats    Chats[]
+  albumId  String?
+  Chat     Chat[]
 }
 
-model Chats {
-  id         String         @id @unique @default(cuid())
-  text       ChatMessages[]
-  creation   DateTime       @default(now())
-  updadeOn   DateTime?      @updatedAt
-  chatRoom   ChatRoom       @relation(fields: [chatRoomId], references: [id])
-  photo      Photos?        @relation(fields: [photosId], references: [id])
+model Chat {
+  id         String        @id @unique @default(cuid())
+  text       ChatMessage[]
+  creation   DateTime      @default(now())
+  updadeOn   DateTime?     @updatedAt
+  chatRoom   ChatRoom      @relation(fields: [chatRoomId], references: [id])
+  photo      Photo?        @relation(fields: [photoId], references: [id])
   chatRoomId String
-  photosId   String?
+  photoId    String?
 }
 
 model ChatRoom {
-  id               String         @id @unique @default(cuid())
-  chatRoomName     String         @unique
-  lastActivity     DateTime       @updatedAt
-  creation         DateTime       @default(now())
-  chatRoomMessages ChatMessages[]
-  Chats            Chats[]
+  id               String        @id @unique @default(cuid())
+  chatRoomName     String        @unique
+  lastActivity     DateTime      @updatedAt
+  creation         DateTime      @default(now())
+  chatRoomMessages ChatMessage[]
+  Chats            Chat[]
 }
 
-model ChatMessages {
+model ChatMessage {
   id         String    @id @unique @default(cuid())
-  chats      Chats?    @relation(fields: [chatsId], references: [id])
+  chats      Chat?     @relation(fields: [chatId], references: [id])
   creation   DateTime  @default(now())
   ChatRoom   ChatRoom? @relation(fields: [chatRoomId], references: [id])
   chatRoomId String?
-  chatsId    String?
+  chatId     String?
 }
 
-model Files {
-  id        String   @id @unique @default(cuid())
-  fileName  String
-  folder    Folders? @relation(fields: [foldersId], references: [id])
-  foldersId String?
+model File {
+  id       String  @id @unique @default(cuid())
+  fileName String
+  folder   Folder? @relation(fields: [folderId], references: [id])
+  folderId String?
 }
 
-model Folders {
+model Folder {
   id         String    @id @unique @default(cuid())
-  owner      Users     @relation(fields: [usersId], references: [id])
+  owner      User      @relation(fields: [userId], references: [id])
   folderName String
-  file       Files[]
+  files      File[]
   pathUrl    String
   creation   DateTime? @default(now())
-  usersId    String    @unique
+  userId     String    @unique
 }
 
-model Articles {
+model Article {
   id       String    @id @unique @default(cuid())
   title    String
   creation DateTime
   updateOn DateTime? @updatedAt
   body     String?
-  tags     Tags[]
-  author   Users     @relation(fields: [usersId], references: [id])
-  usersId  String
+  tags     Tag[]
+  author   User      @relation(fields: [userId], references: [id])
+  userId   String
+  idTag    String[]
 }
 
-model Tags {
-  id       String     @id @unique @default(cuid())
+model Tag {
+  id       String    @id @unique @default(cuid())
   name     String?
-  articles Articles[]
+  articles Article[]
 }
 
-model Friends {
-  id     String  @id @unique @default(cuid())
-  friend Users[]
+model Friend {
+  id     String @id @unique @default(cuid())
+  friends User[]
 }
