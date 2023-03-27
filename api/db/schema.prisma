@@ -8,11 +8,110 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Users {
+  id           String     @id @unique @default(cuid())
+  email        String     @unique
+  userName     String     @unique
+  creationDate DateTime   @default(now())
+  profile      Profiles?  @relation(fields: [profilesId], references: [id])
+  myFolder     Folders?
+  article      Articles[]
+  friends      Friends?   @relation(fields: [friendsId], references: [id])
+  profilesId   String?
+  friendsId    String?
+}
+
+model Profiles {
+  id       String    @id @unique @default(cuid())
+  story    String?
+  birthday DateTime?
+  Albums   Albums[]
+  Users    Users[]
+}
+
+model Albums {
+  id         String    @id @unique @default(cuid())
+  creation   DateTime?
+  update     DateTime? @updatedAt
+  photos     Photos[]
+  Profiles   Profiles? @relation(fields: [profilesId], references: [id])
+  profilesId String?
+}
+
+model Photos {
+  id       String   @id @unique @default(cuid())
+  fileName String
+  uploadOn DateTime
+  albums   Albums?  @relation(fields: [albumsId], references: [id])
+  Url      String?
+  albumsId String?
+  Chats    Chats[]
+}
+
+model Chats {
+  id         String         @id @unique @default(cuid())
+  text       ChatMessages[]
+  creation   DateTime       @default(now())
+  updadeOn   DateTime?      @updatedAt
+  chatRoom   ChatRoom       @relation(fields: [chatRoomId], references: [id])
+  photo      Photos?        @relation(fields: [photosId], references: [id])
+  chatRoomId String
+  photosId   String?
+}
+
+model ChatRoom {
+  id               String         @id @unique @default(cuid())
+  chatRoomName     String         @unique
+  lastActivity     DateTime       @updatedAt
+  creation         DateTime       @default(now())
+  chatRoomMessages ChatMessages[]
+  Chats            Chats[]
+}
+
+model ChatMessages {
+  id         String    @id @unique @default(cuid())
+  chats      Chats?    @relation(fields: [chatsId], references: [id])
+  creation   DateTime  @default(now())
+  ChatRoom   ChatRoom? @relation(fields: [chatRoomId], references: [id])
+  chatRoomId String?
+  chatsId    String?
+}
+
+model Files {
+  id        String   @id @unique @default(cuid())
+  fileName  String
+  folder    Folders? @relation(fields: [foldersId], references: [id])
+  foldersId String?
+}
+
+model Folders {
+  id         String    @id @unique @default(cuid())
+  owner      Users     @relation(fields: [usersId], references: [id])
+  folderName String
+  file       Files[]
+  pathUrl    String
+  creation   DateTime? @default(now())
+  usersId    String    @unique
+}
+
+model Articles {
+  id       String    @id @unique @default(cuid())
+  title    String
+  creation DateTime
+  updateOn DateTime? @updatedAt
+  body     String?
+  tags     Tags[]
+  author   Users     @relation(fields: [usersId], references: [id])
+  usersId  String
+}
+
+model Tags {
+  id       String     @id @unique @default(cuid())
+  name     String?
+  articles Articles[]
+}
+
+model Friends {
+  id     String  @id @unique @default(cuid())
+  friend Users[]
 }

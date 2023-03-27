@@ -13,11 +13,22 @@
     ]
   },
   "dependencies": {
-    "@redwoodjs/forms": "4.4.0",
-    "@redwoodjs/router": "4.4.0",
-    "@redwoodjs/web": "4.4.0",
+    "@chakra-ui/icons": "^2.0.17",
+    "@chakra-ui/react": "^1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@redwoodjs/auth-supabase-web": "4.4.2",
+    "@redwoodjs/forms": "4.4.2",
+    "@redwoodjs/router": "4.4.2",
+    "@redwoodjs/web": "4.4.2",
+    "@supabase/supabase-js": "^1",
+    "@supabase/ui": "^0.36.5",
+    "framer-motion": "^6",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@chakra-ui/storybook-addon": "^4.0.16"
   }
 }
