@@ -1,41 +1,44 @@
-import { Box } from '@chakra-ui/react'
+import { Grid, GridItem, Text } from '@chakra-ui/react'
+import { mode } from '@chakra-ui/theme-tools'
 
 import { MetaTags } from '@redwoodjs/web'
 
-import ArticleCard from 'src/components/ArticleCard/ArticleCard'
-
+import ArticlesCell from 'src/components/Article/ArticlesCell'
 const HomePage = () => {
-  const articles = [
-    {
-      title: 'RedwoodJS',
-      image:
-        'https://res.cloudinary.com/dkedckjae/image/upload/v1665855254/JoMorand/Logo_cwudvc.png',
-      author: 'Jo Morand',
-      publishedAt: '2021-06-01',
-      description: 'RedwoodJS is a full-stack framework for the Jamstack.',
-      content: `RedwoodJS is a full-stack framework for the Jamstack. It combines the best of React, GraphQL, and Prisma to make building full-stack web apps a breeze. RedwoodJS is a full-stack framework for the Jamstack. It  to make building full-stack web apps a breeze. RedwoodJS is a full.`,
-      url: 'https://redwoodjs.com/',
-      source: 'redwoodjs.com',
-      country: 'us',
-      category: 'technology',
-      language: 'en',
-      id: 'redwoodjs-com',
-    },
-  ]
   return (
     <>
       <MetaTags title="Home" description="Home page" />
-      <Box
-        alignContent={'center'}
-        w={' 90%'}
-        h={'auto'}
-        p={6}
-        overflow={'hidden'}
-      >
-        {articles.map((article) => (
-          <ArticleCard article={article} key={article.id} />
-        ))}
-      </Box>
+      {/*  make a grid with 2 columns */}
+      <Grid templateColumns="repeat(6, 1fr)" gridRowGap={'15rem'}>
+        <GridItem
+          colSpan={4}
+          padding={'xl'}
+          margin={6}
+          gap={6}
+          marginBottom={'xl'}
+        >
+          <ArticlesCell />
+        </GridItem>
+        <GridItem colSpan={2}>
+          <Text
+            boxShadow={'2xl'}
+            rounded={'lg'}
+            p={6}
+            fontSize={'xl'}
+            fontWeight={600}
+            align={'center'}
+            textAlign={'center'}
+            borderBottom={'4px'}
+            borderColor={
+              mode === 'light'
+                ? 'brand.lighttheme.border'
+                : 'brand.darktheme.border'
+            }
+          >
+            Side bar
+          </Text>
+        </GridItem>
+      </Grid>
     </>
   )
 }

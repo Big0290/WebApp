@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 
 export const articles = () => {
-  return db.article.findMany()
+  return db.article.findMany({ orderBy: { creation: 'desc' } })
 }
 
 export const article = ({ id }) => {

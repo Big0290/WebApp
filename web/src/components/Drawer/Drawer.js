@@ -22,6 +22,7 @@ import {
   DrawerOverlay,
   Flex,
   Input,
+  useColorMode,
   useDisclosure
 } from '@chakra-ui/react'
 
@@ -85,7 +86,13 @@ const MyDrawer = ({ children }) => {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent
+          bg={
+            useColorMode().colorMode === 'light'
+              ? 'brand.bckgrnd.light'
+              : 'brand.bckgrnd.dark'
+          }
+        >
           <DrawerCloseButton />
           <DrawerHeader>Jo Morand App</DrawerHeader>
 
@@ -116,7 +123,7 @@ const MyDrawer = ({ children }) => {
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="blue">Save</Button>
+            <Button>Save</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

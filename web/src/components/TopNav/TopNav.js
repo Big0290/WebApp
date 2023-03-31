@@ -18,7 +18,6 @@ import {
   Stack,
   Text,
   useColorMode,
-  useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react'
 // import { Logo } from '@choc-ui/logo'
@@ -58,7 +57,10 @@ const Nav = ({ children }) => {
       rounded={'md'}
       _hover={{
         textDecoration: 'none',
-        bg: useColorModeValue('gray.200', 'gray.700'),
+        bg:
+          useColorMode().colorMode === 'light'
+            ? 'brand.lighttheme.hver'
+            : 'brand.darktheme.hver',
       }}
     >
       {children}
@@ -71,14 +73,41 @@ const Nav = ({ children }) => {
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box
+        bg={
+          useColorMode().colorMode === 'light'
+            ? 'brand.lighttheme.bg.nav'
+            : 'brand.darktheme.bg.nav'
+        }
+        px={4}
+        borderBottom={'8px'}
+        marginBottom={6}
+        borderColor={
+          useColorMode().colorMode === 'light'
+            ? 'brand.lighttheme.border'
+            : 'brand.darktheme.border'
+        }
+        boxShadow="lg"
+      >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <NavLink href={'/'}>
             <Logo />
           </NavLink>
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={toggleColorMode}>
+              <Button
+                onClick={toggleColorMode}
+                bg={
+                  useColorMode().colorMode === 'light'
+                    ? 'brand.lighttheme.bg.btn'
+                    : 'brand.darktheme.bg.btn'
+                }
+                _hover={
+                  useColorMode().colorMode === 'light'
+                    ? { bg: 'brand.lighttheme.hver' }
+                    : { bg: 'brand.darktheme.hver' }
+                }
+              >
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 
@@ -93,17 +122,28 @@ const Nav = ({ children }) => {
                   >
                     <Avatar
                       size={'sm'}
-                      src="https://res.cloudinary.com/dkedckjae/image/upload/v1665854747/JoMorand/Logo1389_zlswkk.jpg"
+                      src={
+                        currentUser?.avatarUrl || 'https://bit.ly/sage-adebayo'
+                      }
                       alt="Avatar"
                     />
                   </MenuButton>
                 </NavLink>
-                <MenuList alignItems={'center'}>
+                <MenuList
+                  alignItems={'center'}
+                  bg={
+                    useColorMode().colorMode === 'light'
+                      ? 'brand.lighttheme.bg.nav'
+                      : 'brand.darktheme.bg.nav'
+                  }
+                >
                   <br />
                   <Center>
                     <Avatar
                       size={'2xl'}
-                      src="https://res.cloudinary.com/dkedckjae/image/upload/v1665854747/JoMorand/Logo1389_zlswkk.jpg"
+                      src={
+                        currentUser?.avatarUrl || 'https://bit.ly/sage-adebayo'
+                      }
                       alt="Avatar"
                     />
                   </Center>
@@ -112,7 +152,9 @@ const Nav = ({ children }) => {
                     <Box>
                       <Text>Hello,</Text>
                       <Box h={2}>
-                        <Text fontWeight="bold">{currentUser?.email}</Text>
+                        <Text fontWeight="bold">
+                          {currentUser?.email || 'GUEST'}
+                        </Text>
                       </Box>
                     </Box>
                   </Center>
@@ -130,8 +172,7 @@ const Nav = ({ children }) => {
                   {isAuthenticated ? (
                     <MenuItem
                       onClick={logOut}
-                      color={'red.900'}
-                      bg={'purple.500'}
+                      color={'darkjonquil'}
                       fontWeight={'bold'}
                     >
                       Log Out
